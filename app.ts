@@ -6,7 +6,17 @@ import { routerApp } from "./routes";
 
 const app: Express = express();
 
-app.use(cors());
+const whiteList = ["http://localhost:4200"];
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      origin && whiteList.includes(origin)
+        ? callback(null, true)
+        : callback(new Error("Unauthorized access"));
+    },
+  }),
+);
 app.use(express.json());
 
 routerApp(app);
@@ -14,7 +24,6 @@ routerApp(app);
 app.use(logErrors);
 app.use(boomErrorHandler);
 app.use(errorHandler);
-
 
 app.listen(4000, () => {
   console.log("Listen on Port ", 4000);
