@@ -1,19 +1,13 @@
 import { faker } from "@faker-js/faker";
-import { Pool } from "pg";
 import boom from "@hapi/boom";
-
 import { Product, ProductCreate, ProductUpdate } from "../models";
-import { poolConnection } from "../libs";
+import { sequelize } from "../libs";
 
 class ProductService {
   public listOfProducts: Product[] = [];
-  public pool: Pool;
+
   constructor() {
     this.listOfProducts = this.generateData();
-    this.pool = poolConnection;
-    this.pool.on("error", (error) =>
-      console.error("Error on pool connection", error),
-    );
   }
 
   generateData = (): Product[] => {
@@ -31,10 +25,10 @@ class ProductService {
     return products;
   };
 
-  getProducts = async (): Promise<Product[]> => {
-    const query = 'SELECT * FROM tasks';
-    const rta = await this.pool.query<Product>(query);
-    return rta.rows;
+  getProducts = async () => {
+    const query = "SELECT * FROM tasks";
+    const [data] = await sequelize.query(query);
+    return { data };
   };
 
   getSingleProduct = async (id: Product["id"]) => {

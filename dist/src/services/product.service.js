@@ -34,9 +34,9 @@ class ProductService {
             return products;
         };
         this.getProducts = () => __awaiter(this, void 0, void 0, function* () {
-            const query = 'SELECT * FROM tasks';
-            const rta = yield this.pool.query(query);
-            return rta.rows;
+            const query = "SELECT * FROM tasks";
+            const [data] = yield libs_1.sequelize.query(query);
+            return { data };
         });
         this.getSingleProduct = (id) => __awaiter(this, void 0, void 0, function* () {
             const productSelected = this.listOfProducts.find((product) => product.id === id);
@@ -70,8 +70,6 @@ class ProductService {
             return this.listOfProducts.splice(indexSelectedProduct, 1)[0];
         });
         this.listOfProducts = this.generateData();
-        this.pool = libs_1.poolConnection;
-        this.pool.on("error", (error) => console.error("Error on pool connection", error));
     }
 }
 exports.ProductService = ProductService;

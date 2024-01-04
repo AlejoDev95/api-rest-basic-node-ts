@@ -21,7 +21,8 @@ productRouter.post(
 
 productRouter.get("/", async (_req, res) => {
   const listOfProducts = await productService.getProducts();
-  res.status(200).json({ total: listOfProducts.length, listOfProducts });
+  res.status(200).json(listOfProducts);
+  // res.status(200).json({ total: listOfProducts.length, listOfProducts });
 });
 
 productRouter.get(
