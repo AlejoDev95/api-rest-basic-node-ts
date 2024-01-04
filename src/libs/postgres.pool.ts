@@ -1,11 +1,12 @@
 import { Pool } from "pg";
+import { envConfig } from "../config/";
 
-const poolConnection = new Pool({
-  host: "localhost",
-  port: 5432,
-  user: "alejodev",
-  password: "2530",
-  database: "my_store",
-});
+const { dbUser, dbPassword, dbHost, dbPort, dbName } = envConfig;
+
+const USER = encodeURIComponent(dbUser);
+const PASSWORD = encodeURIComponent(dbPassword);
+const URI = `postgres://${USER}:${PASSWORD}@${dbHost}:${dbPort}/${dbName}`;
+
+const poolConnection = new Pool({ connectionString: URI });
 
 export { poolConnection };

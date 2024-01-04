@@ -1,13 +1,12 @@
 import "express-async-errors";
+import 'dotenv/config'
 import cors from "cors";
-import dotenv from "dotenv";
 import express, { Express } from "express";
 
-import { corsDelegate } from "./config";
+import { corsDelegate, envConfig } from "./config";
 import { logErrors, errorHandler, boomErrorHandler } from "./middleware";
 import { routerApp } from "./routes";
 
-dotenv.config();
 const app: Express = express();
 
 app.use(cors(corsDelegate));
@@ -19,6 +18,6 @@ app.use(logErrors);
 app.use(boomErrorHandler);
 app.use(errorHandler);
 
-app.listen(process.env.PORT, () => {
-  console.log("Listen on Port ", process.env.PORT);
+app.listen(envConfig.port, () => {
+  console.log("Listen on Port ", envConfig.port);
 });
