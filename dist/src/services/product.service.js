@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductService = void 0;
 const faker_1 = require("@faker-js/faker");
 const boom_1 = __importDefault(require("@hapi/boom"));
+const libs_1 = require("../libs");
 class ProductService {
     constructor() {
         this.listOfProducts = [];
@@ -32,13 +33,11 @@ class ProductService {
             }
             return products;
         };
-        this.getProducts = () => {
-            return new Promise((resolve) => {
-                setTimeout(() => {
-                    resolve(this.listOfProducts);
-                }, 2000);
-            });
-        };
+        this.getProducts = () => __awaiter(this, void 0, void 0, function* () {
+            const query = 'SELECT * FROM tasks';
+            const rta = yield this.pool.query(query);
+            return rta.rows;
+        });
         this.getSingleProduct = (id) => __awaiter(this, void 0, void 0, function* () {
             const productSelected = this.listOfProducts.find((product) => product.id === id);
             if (!productSelected) {
@@ -64,13 +63,15 @@ class ProductService {
             return this.listOfProducts[indexSelectedProduct];
         });
         this.deleteProduct = (id) => __awaiter(this, void 0, void 0, function* () {
-            const indexSelectedProduct = this.listOfProducts.findIndex((produdc) => produdc.id === id);
+            const indexSelectedProduct = this.listOfProducts.findIndex((product) => product.id === id);
             if (indexSelectedProduct === -1) {
                 throw boom_1.default.notFound("Product not found");
             }
             return this.listOfProducts.splice(indexSelectedProduct, 1)[0];
         });
         this.listOfProducts = this.generateData();
+        this.pool = libs_1.poolConnection;
+        this.pool.on("error", (error) => console.error("Error on pool connection", error));
     }
 }
 exports.ProductService = ProductService;

@@ -1,12 +1,19 @@
 import { faker } from "@faker-js/faker";
+import { Pool } from "pg";
 import boom from "@hapi/boom";
+
 import { Product, ProductCreate, ProductUpdate } from "../models";
+import { poolConnection } from "../libs";
 
 class ProductService {
   public listOfProducts: Product[] = [];
-
+  public pool: Pool;
   constructor() {
     this.listOfProducts = this.generateData();
+    this.pool = poolConnection;
+    this.pool.on("error", (error) =>
+      console.error("Error on pool connection", error),
+    );
   }
 
   generateData = (): Product[] => {
@@ -24,12 +31,10 @@ class ProductService {
     return products;
   };
 
-  getProducts = (): Promise<Product[]> => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(this.listOfProducts);
-      }, 2000);
-    });
+  getProducts = async (): Promise<Product[]> => {
+    const query = 'SELECT * FROM tasks';
+    const rta = await this.pool.query<Product>(query);
+    return rta.rows;
   };
 
   getSingleProduct = async (id: Product["id"]) => {
@@ -70,7 +75,7 @@ class ProductService {
 
   deleteProduct = async (id: Product["id"]) => {
     const indexSelectedProduct = this.listOfProducts.findIndex(
-      (produdc) => produdc.id === id,
+      (product) => product.id === id,
     );
 
     if (indexSelectedProduct === -1) {

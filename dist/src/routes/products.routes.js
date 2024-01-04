@@ -19,13 +19,13 @@ exports.productRouter = productRouter;
 const productService = new services_1.ProductService();
 productRouter.post("/", (0, middleware_1.validatorHandler)(schemas_1.createProductSchema, "body"), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const newProduct = yield productService.createProduct(req.body);
-    res.status(201).json({ mesage: "Product created", product: newProduct });
+    res.status(201).json({ message: "Product created", product: newProduct });
 }));
 productRouter.get("/", (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const listOfProducts = yield productService.getProducts();
     res.status(200).json({ total: listOfProducts.length, listOfProducts });
 }));
-productRouter.get("/:id", (0, middleware_1.validatorHandler)(schemas_1.getroductSchema, "params"), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+productRouter.get("/:id", (0, middleware_1.validatorHandler)(schemas_1.geProductSchema, "params"), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     const product = yield productService.getSingleProduct(id);
     res.status(200).json({ product });
@@ -40,7 +40,7 @@ productRouter.patch("/:id", (0, middleware_1.validatorHandler)(schemas_1.updateP
     const updatedProduct = yield productService.updateProduct(id, req.body);
     res.status(200).json({ product: updatedProduct });
 }));
-productRouter.delete("/:id", (0, middleware_1.validatorHandler)(schemas_1.getroductSchema, "params"), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+productRouter.delete("/:id", (0, middleware_1.validatorHandler)(schemas_1.geProductSchema, "params"), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     const productDeleted = yield productService.deleteProduct(id);
     res.status(200).json({ product: productDeleted });

@@ -1,13 +1,23 @@
-import { getConnection } from "./../libs";
+import { Pool } from "pg";
+import { poolConnection } from "./../libs";
 
 class UserService {
+  private readonly poolConnection: Pool;
+
+  constructor() {
+    this.poolConnection = poolConnection;
+    this.poolConnection.on("error", (error) =>
+      console.error("Error on pool connection", error),
+    );
+  }
+
   async create(data: unknown) {
     return data;
   }
 
   async find() {
-    const client = await getConnection();
-    const rta = await client.query("SELECT * FROM tasks");
+    const query = "SELECT * FROM tasks";
+    const rta = await this.poolConnection.query(query);
     return rta.rows;
   }
 

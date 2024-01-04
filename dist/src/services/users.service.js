@@ -12,6 +12,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserService = void 0;
 const libs_1 = require("./../libs");
 class UserService {
+    constructor() {
+        this.poolConnection = libs_1.poolConnection;
+        this.poolConnection.on("error", (error) => console.error("Error on pool connection", error));
+    }
     create(data) {
         return __awaiter(this, void 0, void 0, function* () {
             return data;
@@ -19,8 +23,8 @@ class UserService {
     }
     find() {
         return __awaiter(this, void 0, void 0, function* () {
-            const client = yield (0, libs_1.getConnection)();
-            const rta = yield client.query("SELECT * FROM tasks");
+            const query = "SELECT * FROM tasks";
+            const rta = yield this.poolConnection.query(query);
             return rta.rows;
         });
     }

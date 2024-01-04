@@ -15,4 +15,5 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./postgres"), exports);
+__exportStar(require("./postgres.pool"), exports);
 //# sourceMappingURL=index.js.map

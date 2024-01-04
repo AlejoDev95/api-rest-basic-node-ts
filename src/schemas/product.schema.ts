@@ -14,8 +14,8 @@ const createProductSchema = Joi.object<Product>({
 
 const updateProductSchema = Joi.object<Product>({ name, price, image });
 
-const getroductSchema = Joi.object<Product>({
+const geProductSchema = Joi.object<Product>({
   id: id.required(),
 });
 
-export { createProductSchema, updateProductSchema, getroductSchema };
+export { createProductSchema, updateProductSchema, geProductSchema };

@@ -3,7 +3,7 @@ import { ProductService } from "../services";
 import {
   createProductSchema,
   updateProductSchema,
-  getroductSchema,
+  geProductSchema,
 } from "../schemas";
 import { validatorHandler } from "../middleware";
 
@@ -15,7 +15,7 @@ productRouter.post(
   validatorHandler(createProductSchema, "body"),
   async (req, res) => {
     const newProduct = await productService.createProduct(req.body);
-    res.status(201).json({ mesage: "Product created", product: newProduct });
+    res.status(201).json({ message: "Product created", product: newProduct });
   },
 );
 
@@ -26,7 +26,7 @@ productRouter.get("/", async (_req, res) => {
 
 productRouter.get(
   "/:id",
-  validatorHandler(getroductSchema, "params"),
+  validatorHandler(geProductSchema, "params"),
   async (req, res) => {
     const { id } = req.params;
     const product = await productService.getSingleProduct(id);
@@ -58,7 +58,7 @@ productRouter.patch(
 
 productRouter.delete(
   "/:id",
-  validatorHandler(getroductSchema, "params"),
+  validatorHandler(geProductSchema, "params"),
   async (req, res) => {
     const { id } = req.params;
     const productDeleted = await productService.deleteProduct(id);
